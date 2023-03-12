@@ -10,7 +10,7 @@ var GameLogic = (function(){
     track,                
 	cloudIsIn = new Array(),	
 	currentDisplacement = 0,
-	currentLevel = 0,
+	currentLevel = 1,
 	currentTrack = 0,	
 	directorTimer=0,		
 	grav = 12,
@@ -457,7 +457,7 @@ var GameLogic = (function(){
         }
         if(directorTimer>7000){
             noWind();            
-            directorState = 0;
+            directorState = 8; //Math.floor(Math.random()*4);
             directorTimer=0;
         }
     }
@@ -992,7 +992,7 @@ var GameLogic = (function(){
     
     function crash(){		   
         currentTrack=0;
-        currentLevel=0;                
+        currentLevel=1;                
         cont.lightning.removeAllChildren();
         cont.attackBird.removeAllChildren();
         cont.diamond.removeAllChildren();

@@ -167,7 +167,7 @@ var CatzRocket = (function() {
             catzRocket.isCrashed = true;
         catzRocket.catzRocketContainer.x = catzRocket.xScreenPosition;
         catzRocket.catzRocketContainer.y = catzRocket.yScreenPosition + catzRocket.heightOffset;
-        catzRocket.diamondFuel -= catzRocket.fuelConsumption[catzRocket.catzState] * event.delta / 1000;
+      //catzRocket.diamondFuel -= catzRocket.fuelConsumption[catzRocket.catzState] * event.delta / 1000;
         catzRocket.diamondFuel = Math.max(catzRocket.diamondFuel, 0);
         updateFrenzy(event);
         updateRocketSnake();
@@ -318,17 +318,18 @@ var CatzRocket = (function() {
     }
 
     catzRocket.pickupDiamond = function(size) {
-        if (catzRocket.diamondFuel < 10 && catzRocket.catzState != catzRocket.catzStateEnum.Frenzy)
+        if (catzRocket.diamondFuel < 10 && catzRocket.catzState != catzRocket.catzStateEnum.Frenzy) {
             switch (size) {
                 case diamondEnum.shard:
                     CatzRocket.diamondFuel += 0.09;
-                    CatzRocket.frenzyCount += 0.1;
+                    CatzRocket.frenzyCount += 1;
                     break;                
                 case diamondEnum.great:
                     CatzRocket.diamondFuel += 1.5;
                     CatzRocket.frenzyCount += 5;
                     break;
             }
+        }
     }
 
     function updateFrenzy(event) {
@@ -364,7 +365,7 @@ var CatzRocket = (function() {
                 }
             }
         } else if (!catzRocket.hasFrenzy() && catzRocket.frenzyCount > 0) {
-            if (catzRocket.diamondFuel >= catzRocket.maxDiamondFuel) {
+            if (CatzRocket.frenzyCount > 10) {
                 catzRocket.diamondFuel = catzRocket.maxDiamondFuel / 2;
                 catzRocket.catz.gotoAndPlay("frenzy ready");
                 catzRocket.rocket.alpha = 0;
@@ -485,7 +486,7 @@ var CatzRocket = (function() {
     catzRocket.catzUp = function() {
         if (catzRocket.diamondFuel > 0) {
             if (catzRocket.catzState === catzRocket.catzStateEnum.Normal) {
-                catzRocket.diamondFuel -= 0.25;
+                // catzRocket.diamondFuel -= 0.25;
                 catzRocket.catzVelocity -= 2;
                 changeState(catzRocket.catzStateEnum.Uploop);
             } else if (catzRocket.catzState === catzRocket.catzStateEnum.Frenzy) {
