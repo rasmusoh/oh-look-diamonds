@@ -113,7 +113,7 @@ var GameLogic = (function(){
     
     function updateWorldContainer(event){
         var zoomDuration = 1000;
-        var zoomOutLimit=0.37;
+        var zoomOutLimit=0.87;
 
         if((!createjs.Tween.hasActiveTweens(gameView) && !createjs.Tween.hasActiveTweens(bg) && !createjs.Tween.hasActiveTweens(cont.star)) && !CatzRocket.isCrashed){
             if(!zoomOut && CatzRocket.catzRocketContainer.y < 0 && CatzRocket.catzState === CatzRocket.catzStateEnum.Normal){               
@@ -142,10 +142,11 @@ var GameLogic = (function(){
             }
         }               
                 
-        var catzCameraPos = Math.min(CatzRocket.catzRocketContainer.y,200);
-        var zoomPercent=(gameView.scaleY-zoomOutLimit)/(1-zoomOutLimit);
-        bg.y = (-1100-catzCameraPos/3)*zoomPercent-200*(1-zoomPercent); 
-        cont.star.y=(100-catzCameraPos/3)*zoomPercent-270*(1-zoomPercent);
+        var zoomPercent=gameView.scaleY;
+        var catzCameraPos = Math.max(-400,Math.min(100,CatzRocket.catzRocketContainer.y));
+        console.log(CatzRocket.catzRocketContainer.y,catzCameraPos)
+        bg.y = (-1100-catzCameraPos/5)*zoomPercent-200*(1-zoomPercent); 
+        cont.star.y=(100-catzCameraPos/5)*zoomPercent-270*(1-zoomPercent);
         gameView.y=(200-catzCameraPos)*zoomPercent+300*(1-zoomPercent);
     }
 
