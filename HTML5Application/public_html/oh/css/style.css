@@ -21,8 +21,6 @@ body {
 	margin: 30px auto;
 }
 
-#
-
 a {
     color: #ffffcc;
 }
@@ -107,8 +105,16 @@ button {
 .counter {
 	float:left;
 }
-.progress-bar {
+.fuel-bar {
+        height: 30px;
 		background-color: #99ccff;				
+		-webkit-transition: width .2s ease-out;
+		-o-transition: width .2s ease-out;
+		transition: width .2s ease-out;
+}
+.frenzy-bar {
+        height: 30px;
+		background-color: #ff99ff;				
 		-webkit-transition: width .2s ease-out;
 		-o-transition: width .2s ease-out;
 		transition: width .2s ease-out;
@@ -116,6 +122,10 @@ button {
 
 .background-red {
 	background-color: #cc0000;
+}
+
+.background-white {
+	background-color: white;
 }
 
 .odometer {

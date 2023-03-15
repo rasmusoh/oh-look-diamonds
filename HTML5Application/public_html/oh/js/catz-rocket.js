@@ -2,7 +2,7 @@ var CatzRocket = (function() {
     var catzRocket = {
         catzRocketContainer: null,
         silouette: null,
-        diamondFuel: 2,
+        diamondFuel: 5,
         maxDiamondFuel: 10,
         isWounded: false,
         isHit: false,
@@ -11,6 +11,7 @@ var CatzRocket = (function() {
         //glass: null,
         heightOffset: 0,
         frenzyCount: 0,
+        frenzyLimit: 10,
         frenzyTimer: 0,
         frenzyReady: false,
         rocketSound: null,
@@ -167,7 +168,7 @@ var CatzRocket = (function() {
             catzRocket.isCrashed = true;
         catzRocket.catzRocketContainer.x = catzRocket.xScreenPosition;
         catzRocket.catzRocketContainer.y = catzRocket.yScreenPosition + catzRocket.heightOffset;
-      //catzRocket.diamondFuel -= catzRocket.fuelConsumption[catzRocket.catzState] * event.delta / 1000;
+        catzRocket.diamondFuel -= catzRocket.fuelConsumption[catzRocket.catzState] * event.delta / 1000;
         catzRocket.diamondFuel = Math.max(catzRocket.diamondFuel, 0);
         updateFrenzy(event);
         updateRocketSnake();
@@ -191,7 +192,7 @@ var CatzRocket = (function() {
 
     function checkFuel(mightBeUpsideDown) {
         if (catzRocket.diamondFuel === 0) {
-//            catzRocket.glass.gotoAndPlay("outOfFuel");
+            //catzRocket.glass.gotoAndPlay("outOfFuel");
             createjs.Tween.removeTweens(catzRocket.catzRocketContainer);
             if (mightBeUpsideDown) {
                 if (catzRocket.catzRocketContainer.rotation <= -90 && catzRocket.catzRocketContainer.rotation >= -270) {
@@ -321,12 +322,12 @@ var CatzRocket = (function() {
         if (catzRocket.diamondFuel < 10 && catzRocket.catzState != catzRocket.catzStateEnum.Frenzy) {
             switch (size) {
                 case diamondEnum.shard:
-                    CatzRocket.diamondFuel += 0.09;
+                    CatzRocket.diamondFuel += 0.20;
                     CatzRocket.frenzyCount += 1;
                     break;                
                 case diamondEnum.great:
                     CatzRocket.diamondFuel += 1.5;
-                    CatzRocket.frenzyCount += 5;
+                    CatzRocket.frenzyCount += 0.5;
                     break;
             }
         }
@@ -365,7 +366,7 @@ var CatzRocket = (function() {
                 }
             }
         } else if (!catzRocket.hasFrenzy() && catzRocket.frenzyCount > 0) {
-            if (CatzRocket.frenzyCount > 10) {
+            if (CatzRocket.frenzyCount > CatzRocket.frenzyLimit) {
                 catzRocket.diamondFuel = catzRocket.maxDiamondFuel / 2;
                 catzRocket.catz.gotoAndPlay("frenzy ready");
                 catzRocket.rocket.alpha = 0;
@@ -486,7 +487,7 @@ var CatzRocket = (function() {
     catzRocket.catzUp = function() {
         if (catzRocket.diamondFuel > 0) {
             if (catzRocket.catzState === catzRocket.catzStateEnum.Normal) {
-                // catzRocket.diamondFuel -= 0.25;
+                catzRocket.diamondFuel -= 0.15;
                 catzRocket.catzVelocity -= 2;
                 changeState(catzRocket.catzStateEnum.Uploop);
             } else if (catzRocket.catzState === catzRocket.catzStateEnum.Frenzy) {
@@ -569,7 +570,7 @@ var CatzRocket = (function() {
         catzRocket.isCrashed = false;
         catzRocket.hideSnake();
         CatzRocket.catzVelocity = velocity;	
-		catzRocket.diamondFuel = 2;        
+		catzRocket.diamondFuel = 5;        
 	}
      
      catzRocket.catzEndLoop = function() {

@@ -400,11 +400,18 @@ var GameLogic = (function () {
       track_length+=spacing;
       let phase = track_length*noise_x_scale;
       let noise_sample = (Math.sin(2 * phase) * Math.sin(Math.PI * phase*(1-chaos*Math.cos(phase))));
-      track_end.x += spacing;
-      track_end.y = amplitude*noise_sample+offset;
-      // console.log(track_end, v);
-      spawnDiamond(track_end);
-      // console.log(0.4-CatzRocket.catzRocketContainer.y/1000);
+      let dx = spacing;
+      let dy = amplitude*noise_sample+offset-track_end.y;
+      let d_inv = 1/Math.sqrt(dx*dx+dy*dy);
+      dx *= d_inv;
+      dy *= d_inv;
+      let total = 0;
+      while (total < spacing) {
+        track_end.x+=dx*spacing;
+        track_end.y+=dy*spacing;
+        spawnDiamond(track_end);
+        total+=dx*spacing;
+      }
       i++;
       if (i > 1000) {
         throw new Error("inifite loop when building track");
@@ -545,16 +552,31 @@ var GameLogic = (function () {
   }
 
   function updatePointer() {
-    $('.progress-bar').css('width', CatzRocket.diamondFuel * 10 + '%');
+    var f = (CatzRocket.diamondFuel/CatzRocket.maxDiamondFuel);
+    $('.fuel-bar').css('width', f*100 + '%');
+    $('.frenzy-bar').css('width', 100*CatzRocket.frenzyCount/CatzRocket.frenzyLimit + '%');
     if (CatzRocket.diamondFuel < 2) {
       if (fuelBlinkTimer > 10) {
-        $('.progress-bar').toggleClass("background-red");
+        $('.fuel-bar').toggleClass("background-red");
         fuelBlinkTimer = 0;
       }
       fuelBlinkTimer++;
     }
-    if (CatzRocket.diamondFuel >= 2)
-      $('.progress-bar').removeClass("background-red");
+    else {
+      $('.fuel-bar').removeClass("background-red");
+    }
+
+    if (CatzRocket.catzState === CatzRocket.catzStateEnum.Frenzy || CatzRocket.catzState === CatzRocket.catzStateEnum.FrenzyUploop)  {
+      if (fuelBlinkTimer > 2) {
+        $('.frenzy-bar').toggleClass("background-white");
+        fuelBlinkTimer = 0;
+      }
+      fuelBlinkTimer++;
+    }
+    else {
+      $('.frenzy-bar').removeClass("background-white");
+    }
+
     //hudPointer.rotation = Math.min(-30 + CatzRocket.diamondFuel*135/10,105);                
   }
 
