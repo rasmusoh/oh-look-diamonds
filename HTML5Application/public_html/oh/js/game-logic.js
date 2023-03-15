@@ -12,10 +12,10 @@ var GameLogic = (function () {
     currentDisplacement = 0,
     currentLevel = 1,
     currentTrack = 0,
-    track_up = false,
-    track_length = 0,
-    track_end = {x:0,y:0},
-    track_end_velocity = {x:1,y:0}; //{x:1,y:0},
+    trackLength = 0,
+    trackEnd = {x:0,y:0},
+    attackBirdsSpawnTimer = 0,
+    attackBirdsSpawned = 0,
     directorTimer = 0,
     grav = 12,
     lastResolveNorm = [1, 0],
@@ -389,27 +389,29 @@ var GameLogic = (function () {
 
 
   function updateDirector(event) {
-    track_end.x-=diSpeed*event.delta
-    const chaos = 0.5;
-    const noise_x_scale = 0.0005;
+    difficulty = Math.min(1,Math.sqrt(trackLength)/400);
+    trackEnd.x-=diSpeed*event.delta
+    const chaos = difficulty*1.0;
+    const noise_x_scale =(1-difficulty)*0.0002+difficulty*0.001;
     const amplitude = 300;
     const offset = -200;
-    const spacing = 150;
-    i =0; 
-    while (track_end.x < CatzRocket.catzRocketContainer.x + 800) {
-      track_length+=spacing;
-      let phase = track_length*noise_x_scale;
+    const spacing = (1-difficulty)*150+difficulty*300;
+    console.log(difficulty, spacing);
+    i =0;
+    while (trackEnd.x < CatzRocket.catzRocketContainer.x + 800) {
+      trackLength+=spacing;
+      let phase = trackLength*noise_x_scale;
       let noise_sample = (Math.sin(2 * phase) * Math.sin(Math.PI * phase*(1-chaos*Math.cos(phase))));
       let dx = spacing;
-      let dy = amplitude*noise_sample+offset-track_end.y;
+      let dy = amplitude*noise_sample+offset-trackEnd.y;
       let d_inv = 1/Math.sqrt(dx*dx+dy*dy);
       dx *= d_inv;
       dy *= d_inv;
       let total = 0;
       while (total < spacing) {
-        track_end.x+=dx*spacing;
-        track_end.y+=dy*spacing;
-        spawnDiamond(track_end);
+        trackEnd.x+=dx*spacing;
+        trackEnd.y+=dy*spacing;
+        spawnDiamond(trackEnd);
         total+=dx*spacing;
       }
       i++;
@@ -417,7 +419,17 @@ var GameLogic = (function () {
         throw new Error("inifite loop when building track");
       }
     }
+
+    const attackBirdsOrder = ["duck","seagull" ,"crow","bat","falcon","glasses"];
+    attackBirdsSpawnTimer+=event.delta/1000;
+    if (attackBirdsSpawnTimer > 8.0) {
+      attackBirdsType = attackBirdsOrder[Math.min(5,Math.floor(attackBirdsSpawned/3))]; // three of each type, in order of difficulty
+      spawnAttackBird(attackBirdsType, trackEnd.x, trackEnd.y+200);
+      attackBirdsSpawnTimer = 0;
+      attackBirdsSpawned += 1;
+    }
   }
+
   // trackTimer+=event.delta;
   // if (trackTimer>100){
   //     trackTimer=0;
@@ -1047,7 +1059,7 @@ var GameLogic = (function () {
   }
 
   function crash() {
-    track_length = 0;
+    trackLength = 0;
     trackBuiltUntilX = 0;
     currentTrack = 0;
     currentLevel = 1;
@@ -1072,6 +1084,8 @@ var GameLogic = (function () {
     if (debugOptions.trustFund && gameStats.score < 20000)
       gameStats.score = 20000;
     updatePointer();
+    attackBirdsSpawnTimer = 0;
+    attackBirdsSpawned = 0;
     bg.y = -1200;
     bg.scaleX = 1;
     bg.scaleY = 1;

@@ -11,7 +11,7 @@ var CatzRocket = (function() {
         //glass: null,
         heightOffset: 0,
         frenzyCount: 0,
-        frenzyLimit: 10,
+        frenzyLimit: 20,
         frenzyTimer: 0,
         frenzyReady: false,
         rocketSound: null,

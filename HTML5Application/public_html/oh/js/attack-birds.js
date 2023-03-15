@@ -9,12 +9,12 @@ var p = createjs.extend(AttackBird, createjs.Sprite);
 p.setup = function (current) {    
 	var prop = {
 		chicken:  {acceleration: 0,  topSpeed2: 100000, weight: 0.2},
-		falcon:   {acceleration: 8, topSpeed2: 100000, weight:0.3}, 
-		crow:     {acceleration: 5,  topSpeed2: 100000, weight:0.5}, 
-		bat:      {acceleration: 7,  topSpeed2: 100000, weight:0.1}, 
-		duck:     {acceleration: 5, topSpeed2: 100000, weight:0.2}, 
+		falcon:   {acceleration: 8, topSpeed2: 300000, weight:0.3}, 
+		crow:     {acceleration: 5,  topSpeed2: 200000, weight:0.5}, 
+		bat:      {acceleration: 7,  topSpeed2: 300000, weight:0.1}, 
+		duck:     {acceleration: 5, topSpeed2: 200000, weight:0.2}, 
 		seagull:  {acceleration: 3, topSpeed2: 100000, weight:0.1}, 
-		glasses:  {acceleration: 11, topSpeed2: 100000, weight:1}
+		glasses:  {acceleration: 11, topSpeed2: 400000, weight:1}
 	}[current];
 			
     this.topSpeed2 = prop.topSpeed2;
