@@ -9,7 +9,8 @@ var GameLogic = (function () {
     parallaxSpeed,
     currentLevel = 1,
     trackLength = 0,
-    trackEnd = {x:0,y:0},
+    lastLoopX = 0,
+    trackEnd = {x: 0, y: 0},
     attackBirdsSpawnTimer = 0,
     attackBirdsSpawned = 0,
     grav = 12,
@@ -204,9 +205,9 @@ var GameLogic = (function () {
   }
 
   function spawnDiamond(pos) {
-    var sprite  = helpers.createSprite(dataDict["diamond"],"cycle", 
-            {x:pos.x, y:pos.y});											
-    containerDict["diamond"].addChild(sprite);                                                
+    var sprite = helpers.createSprite(dataDict["diamond"], "cycle",
+      {x: pos.x, y: pos.y});
+    containerDict["diamond"].addChild(sprite);
   }
 
   function updateClouds(event) {
@@ -372,29 +373,40 @@ var GameLogic = (function () {
 
 
   function updateDirector(event) {
-    difficulty = Math.min(1,Math.sqrt(trackLength)/400);
-    trackEnd.x-=diSpeed*event.delta
-    const chaos = difficulty*1.0;
-    const noise_x_scale =(1-difficulty)*0.0002+difficulty*0.001;
+    difficulty = Math.min(1, Math.sqrt(trackLength) / 400);
+    trackEnd.x -= diSpeed * event.delta
+    const loopSpacing = 1000;
+    const chaos = difficulty * 1.0;
+    const noise_x_scale = (1 - difficulty) * 0.0002 + difficulty * 0.001;
     const amplitude = 300;
     const offset = -200;
-    const spacing = (1-difficulty)*150+difficulty*300;
-    i =0;
+    const spacing = (1 - difficulty) * 150 + difficulty * 300;
+    i = 0;
     while (trackEnd.x < CatzRocket.catzRocketContainer.x + 800) {
-      trackLength+=spacing;
-      let phase = trackLength*noise_x_scale;
-      let noise_sample = (Math.sin(2 * phase) * Math.sin(Math.PI * phase*(1-chaos*Math.cos(phase))));
-      let dx = spacing;
-      let dy = amplitude*noise_sample+offset-trackEnd.y;
-      let d_inv = 1/Math.sqrt(dx*dx+dy*dy);
-      dx *= d_inv;
-      dy *= d_inv;
-      let total = 0;
-      while (total < spacing) {
-        trackEnd.x+=dx*spacing;
-        trackEnd.y+=dy*spacing;
-        spawnDiamond(trackEnd);
-        total+=dx*spacing;
+      if (trackLength - lastLoopX > loopSpacing && trackEnd.y > 0) {
+        let pos;
+        for (let coord of TrackParts.easy.loop) {
+          pos = {x: coord.x + trackEnd.x, y: coord.y + trackEnd.y};
+          spawnDiamond(pos);
+        }
+        trackEnd = pos;
+        lastLoopX = trackLength;
+      } else {
+        trackLength += spacing;
+        let phase = trackLength * noise_x_scale;
+        let noise_sample = (Math.sin(2 * phase) * Math.sin(Math.PI * phase * (1 - chaos * Math.cos(phase))));
+        let dx = spacing;
+        let dy = amplitude * noise_sample + offset - trackEnd.y;
+        let d_inv = 1 / Math.sqrt(dx * dx + dy * dy);
+        dx *= d_inv;
+        dy *= d_inv;
+        let total = 0;
+        while (total < spacing) {
+          trackEnd.x += dx * spacing;
+          trackEnd.y += dy * spacing;
+          spawnDiamond(trackEnd);
+          total += dx * spacing;
+        }
       }
       i++;
       if (i > 1000) {
@@ -404,16 +416,16 @@ var GameLogic = (function () {
 
 
     let windActive = Math.abs(wind) > 0;
-    windTimer -= event.delta/1000;
+    windTimer -= event.delta / 1000;
     if (windActive) {
-      windSwapTimer-= event.delta/1000;
+      windSwapTimer -= event.delta / 1000;
       if (windSwapTimer <= 0.0) {
         if (wind < 0) {
           downWind();
         } else {
           upWind();
         }
-        windSwapTimer = Math.random()*5;
+        windSwapTimer = Math.random() * 5;
       }
     }
     if (windTimer <= 0) {
@@ -429,11 +441,11 @@ var GameLogic = (function () {
       }
     }
 
-    const attackBirdsOrder = ["duck","seagull" ,"crow","bat","falcon","glasses"];
-    attackBirdsSpawnTimer+=event.delta/1000;
+    const attackBirdsOrder = ["duck", "seagull", "crow", "bat", "falcon", "glasses"];
+    attackBirdsSpawnTimer += event.delta / 1000;
     if (attackBirdsSpawnTimer > 8.0) {
-      attackBirdsType = attackBirdsOrder[Math.min(5,Math.floor(attackBirdsSpawned/3))]; // three of each type, in order of difficulty
-      spawnAttackBird(attackBirdsType, trackEnd.x, trackEnd.y+200);
+      attackBirdsType = attackBirdsOrder[Math.min(5, Math.floor(attackBirdsSpawned / 3))]; // three of each type, in order of difficulty
+      spawnAttackBird(attackBirdsType, trackEnd.x, trackEnd.y + 200);
       attackBirdsSpawnTimer = 0;
       attackBirdsSpawned += 1;
     }
@@ -573,9 +585,9 @@ var GameLogic = (function () {
   }
 
   function updatePointer() {
-    var f = (CatzRocket.diamondFuel/CatzRocket.maxDiamondFuel);
-    $('.fuel-bar').css('width', f*100 + '%');
-    $('.frenzy-bar').css('width', 100*CatzRocket.frenzyCount/CatzRocket.frenzyLimit + '%');
+    var f = (CatzRocket.diamondFuel / CatzRocket.maxDiamondFuel);
+    $('.fuel-bar').css('width', f * 100 + '%');
+    $('.frenzy-bar').css('width', 100 * CatzRocket.frenzyCount / CatzRocket.frenzyLimit + '%');
     if (CatzRocket.diamondFuel < 2) {
       if (fuelBlinkTimer > 10) {
         $('.fuel-bar').toggleClass("background-red");
@@ -587,7 +599,7 @@ var GameLogic = (function () {
       $('.fuel-bar').removeClass("background-red");
     }
 
-    if (CatzRocket.catzState === CatzRocket.catzStateEnum.Frenzy || CatzRocket.catzState === CatzRocket.catzStateEnum.FrenzyUploop)  {
+    if (CatzRocket.catzState === CatzRocket.catzStateEnum.Frenzy || CatzRocket.catzState === CatzRocket.catzStateEnum.FrenzyUploop) {
       if (fuelBlinkTimer > 2) {
         $('.frenzy-bar').toggleClass("background-white");
         fuelBlinkTimer = 0;
@@ -1081,7 +1093,6 @@ var GameLogic = (function () {
     rocketSong.stop();
     trackLength = 0;
     trackBuiltUntilX = 0;
-    currentTrack = 0;
     currentLevel = 1;
     cont.lightning.removeAllChildren();
     cont.attackBird.removeAllChildren();
