@@ -10,13 +10,14 @@ var GameLogic = (function () {
     currentLevel = 1,
     trackLength = 0,
     lastLoopX = 0,
+    bigDiamondCounter = 0,
     trackEnd = {x: 0, y: 0},
     attackBirdsSpawnTimer = 0,
     attackBirdsSpawned = 0,
     grav = 12,
     lastResolveNorm = [1, 0],
     paused = false,
-    windTimer = 60, // first wind starts after a minute of play
+    windTimer = 90, // first wind starts after 90 seconds of play
     windSwapTimer = 0,
     wind = 0,
     windSound,
@@ -204,9 +205,18 @@ var GameLogic = (function () {
     cont.cloud.addChild(cloud);
   }
 
-  function spawnDiamond(pos) {
-    var sprite = helpers.createSprite(dataDict["diamond"], "cycle",
-      {x: pos.x, y: pos.y});
+  function spawnDiamond(pos,invBigDiamondFrequency) {
+    bigDiamondCounter+=1;
+    let sprite;
+    if (bigDiamondCounter > invBigDiamondFrequency) {
+      sprite = helpers.createSprite(dataDict["greatDiamond"], "greatCycle",
+        {x: pos.x, y: pos.y});
+      bigDiamondCounter=0;
+
+    } else {
+      sprite = helpers.createSprite(dataDict["diamond"], "cycle",
+        {x: pos.x, y: pos.y});
+    }
     containerDict["diamond"].addChild(sprite);
   }
 
@@ -374,20 +384,22 @@ var GameLogic = (function () {
 
   function updateDirector(event) {
     difficulty = Math.min(1, Math.sqrt(trackLength) / 400);
-    trackEnd.x -= diSpeed * event.delta
+    trackEnd.x -= diSpeed * event.delta;
+    const invBigDiamondFrequency = difficulty*30+ (1-difficulty)*10; // a big diamond every n small ones
     const loopSpacing = 1000;
     const chaos = difficulty * 1.0;
     const noise_x_scale = (1 - difficulty) * 0.0002 + difficulty * 0.001;
     const amplitude = 300;
     const offset = -200;
-    const spacing = (1 - difficulty) * 150 + difficulty * 300;
+    const spacing = (1 - difficulty) * 150 + difficulty * 250;
     i = 0;
     while (trackEnd.x < CatzRocket.catzRocketContainer.x + 800) {
       if (trackLength - lastLoopX > loopSpacing && trackEnd.y > 0) {
         let pos;
-        for (let coord of TrackParts.easy.loop) {
+        for (let i=0; i< TrackParts.easy.loop.length; i+=2) {
+          let coord = TrackParts.easy.loop[i];
           pos = {x: coord.x + trackEnd.x, y: coord.y + trackEnd.y};
-          spawnDiamond(pos);
+          spawnDiamond(pos, invBigDiamondFrequency);
         }
         trackEnd = pos;
         lastLoopX = trackLength;
@@ -404,7 +416,7 @@ var GameLogic = (function () {
         while (total < spacing) {
           trackEnd.x += dx * spacing;
           trackEnd.y += dy * spacing;
-          spawnDiamond(trackEnd);
+          spawnDiamond(trackEnd, invBigDiamondFrequency);
           total += dx * spacing;
         }
       }
@@ -441,10 +453,10 @@ var GameLogic = (function () {
       }
     }
 
-    const attackBirdsOrder = ["duck", "seagull", "crow", "bat", "falcon", "glasses"];
+    const attackBirdsOrder = ["duck", "seagull", "bat", "crow", "falcon", "glasses"];
     attackBirdsSpawnTimer += event.delta / 1000;
     if (attackBirdsSpawnTimer > 8.0) {
-      attackBirdsType = attackBirdsOrder[Math.min(5, Math.floor(attackBirdsSpawned / 3))]; // three of each type, in order of difficulty
+      attackBirdsType = attackBirdsOrder[Math.min(5, Math.floor(attackBirdsSpawned / 2))]; // three of each type, in order of difficulty
       spawnAttackBird(attackBirdsType, trackEnd.x, trackEnd.y + 200);
       attackBirdsSpawnTimer = 0;
       attackBirdsSpawned += 1;
@@ -642,40 +654,6 @@ var GameLogic = (function () {
       }
     }
   }
-
-  /*function updateScatterDiamonds(event){
-      if(currentTrack<2)
-          var thres = 0.95;        
-      else if(currentTrack<4)
-          thres = 0.90;        
-      else if(currentTrack<6)
-          thres = 0.8;       
-      else
-          thres = 0.7;
-      
-      if(Math.random()>thres){
-          var diamond = helpers.createSprite(SpriteSheetData.diamond, "cycle", 
-      {x:800, y:Math.pow(35*Math.random(),2)-1000, scaleX:0.75, scaleY:0.75});			                                    
-          scatterDiamondsCont.addChild(diamond);
-      }        
-      for (var i = 0, arrayLength = scatterDiamondsCont.children.length; i < arrayLength; i++) {
-          var kid = scatterDiamondsCont.children[i];
-          kid.x -= diSpeed*event.delta;    
-          if (kid.x <= -100){
-            scatterDiamondsCont.removeChildAt(i);
-            arrayLength -= 1;
-            i -= 1;
-          }                               
-          if(overlapCheckCircle(kid.x,kid.y,40)){
-              gameStats.score += 1;
-              CatzRocket.frenzyCount+=7.5;
-              arrayLength = arrayLength - 1;
-              diamondSound.play();
-              CatzRocket.diamondFuel +=1;
-              scatterDiamondsCont.removeChildAt(i);
-          }
-      }   
-  }*/
 
   function upWind() {
     wind = -0.73 * grav;
