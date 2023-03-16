@@ -4,7 +4,6 @@ var GameLogic = (function () {
     cloudSpeed,
     diSpeed,
     fgSpeed,
-    jump,
     mousedown,
     parallaxSpeed,
     currentLevel = 1,
@@ -17,7 +16,8 @@ var GameLogic = (function () {
     grav = 12,
     lastResolveNorm = [1, 0],
     paused = false,
-    windTimer = 90, // first wind starts after 90 seconds of play
+    windTimer = 90, // first wind starts after n seconds of play
+    thunderCloudTimer = 20, // first thunder starts after n seconds of play
     windSwapTimer = 0,
     wind = 0,
     windSound,
@@ -264,7 +264,7 @@ var GameLogic = (function () {
       exitSmoke.x -= cloudSpeed;
   }
 
-  function spawnThunderCloud(xPos, yPos, type) {
+  function spawnThunderCloud(xPos, yPos) {
     createjs.Sound.play("thunder");
     var cloudtype = Math.floor(Math.random() * 5 + 1);
     cloudtype = "cloud" + cloudtype.toString();
@@ -280,10 +280,10 @@ var GameLogic = (function () {
     cont.thunder.addChild(cloud);
   }
 
-  function updateThunderClouds(event) {
+  function updateThunderClouds(_event) {
     for (var i = 0, arrayLength = cont.thunder.children.length; i < arrayLength; i++) {
       var kid = cont.thunder.children[i];
-      kid.x -= cloudSpeed;
+      kid.x -= cloudSpeed/3;
       if (kid.x <= -500) {
         cont.thunder.removeChildAt(i);
         arrayLength -= 1;
@@ -385,6 +385,7 @@ var GameLogic = (function () {
   function updateDirector(event) {
     difficulty = Math.min(1, Math.sqrt(trackLength) / 400);
     trackEnd.x -= diSpeed * event.delta;
+    const invThunderCloudFrequency = difficulty*8+(1-difficulty)*20;  // a thundercloud every n seconds
     const invBigDiamondFrequency = difficulty*30+ (1-difficulty)*10; // a big diamond every n small ones
     const loopSpacing = 1000;
     const chaos = difficulty * 1.0;
@@ -451,6 +452,12 @@ var GameLogic = (function () {
         downWind();
         windTimer = 7;
       }
+    }
+
+    thunderCloudTimer-=event.delta/1000;
+    if (thunderCloudTimer <= 0 && trackEnd.y<0) {
+      spawnThunderCloud(trackEnd.x, trackEnd.y-100);
+      thunderCloudTimer = invThunderCloudFrequency;
     }
 
     const attackBirdsOrder = ["duck", "seagull", "bat", "crow", "falcon", "glasses"];
@@ -1155,7 +1162,6 @@ var GameLogic = (function () {
     stage.addEventListener("stagemousedown", function () {mousedown = true; CatzRocket.catzUp();});
     stage.addEventListener("stagemouseup", function () {mousedown = false; CatzRocket.catzEndLoop();});
 
-    GameLogic.jump = false;
     paused = false;
 
     if (!gameStats.hasBeenFirst.round) {
