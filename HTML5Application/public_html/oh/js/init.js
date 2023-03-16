@@ -88,6 +88,7 @@ var InitializeStage = (function(){
                     {id:"miscSound", src:"assets/sound/misc.mp3"},
                     {id:"catzScream2", src:"assets/sound/cat_meow_wounded_1.mp3"},                    
                     {id:"wick", src:"assets/sprites/wick.png"},
+                    {id:"windSwirls", src:"assets/sprites/wind.png"},
                     {id:"wickSound", src:"assets/sound/wick.mp3"},                    
                 ];
 

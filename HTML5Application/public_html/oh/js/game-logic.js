@@ -7,24 +7,19 @@ var GameLogic = (function () {
     jump,
     mousedown,
     parallaxSpeed,
-    track,
-    cloudIsIn = new Array(),
-    currentDisplacement = 0,
     currentLevel = 1,
-    currentTrack = 0,
     trackLength = 0,
     trackEnd = {x:0,y:0},
     attackBirdsSpawnTimer = 0,
     attackBirdsSpawned = 0,
-    directorTimer = 0,
     grav = 12,
     lastResolveNorm = [1, 0],
-    onTrack = false,
     paused = false,
-    trackTimer = 0,
+    windTimer = 60, // first wind starts after a minute of play
+    windSwapTimer = 0,
     wind = 0,
+    windSound,
     zoomOut = false,
-    zooming = false,
     fuelBlinkTimer = 0,
     containerDict = {
       "diamond": cont.diamond,
@@ -33,15 +28,7 @@ var GameLogic = (function () {
       "goose": cont.goose,
       "hawk": cont.hawk,
       "thunderCloud": cont.thunder
-    },
-
-    directorStateEnum = {
-      Normal: 0,
-      Birds: 1,
-      Wind: 2,
-      Thunder: 3
-    },
-    directorState = directorStateEnum.Normal;
+    };
 
   gameLogic.timeAdjust = function (event) {
     if (event.delta > 0.05) {
@@ -105,8 +92,6 @@ var GameLogic = (function () {
         + "\nfuel  " + CatzRocket.diamondFuel
         + "\nfrenzyReady: " + CatzRocket.frenzyReady
         + "\nHoboDialogNo: " + House.hoboDialogNumber
-        + "\n\ncurrentDisplacement: " + currentDisplacement
-        + "\n\currentLevel" + currentLevel
         + "\n\mousedown: " + mousedown
         + "\nstate: " + CatzRocket.catzState;
 
@@ -121,7 +106,6 @@ var GameLogic = (function () {
 
     if ((!createjs.Tween.hasActiveTweens(gameView) && !createjs.Tween.hasActiveTweens(bg) && !createjs.Tween.hasActiveTweens(cont.star)) && !CatzRocket.isCrashed) {
       if (!zoomOut && CatzRocket.catzRocketContainer.y < 0 && CatzRocket.catzState === CatzRocket.catzStateEnum.Normal) {
-        zooming = true;
         createjs.Tween.get(gameView)
           .to({scaleX: zoomOutLimit, scaleY: zoomOutLimit}, zoomDuration, createjs.Ease.linear)
           .call(function () {zoomOut = true; zooming = false;});
@@ -133,7 +117,6 @@ var GameLogic = (function () {
           .to({scaleX: zoomOutLimit, scaleY: zoomOutLimit}, zoomDuration, createjs.Ease.linear);
       }
       else if (zoomOut && CatzRocket.catzRocketContainer.y > 300 && CatzRocket.catzState === CatzRocket.catzStateEnum.Normal) {
-        zooming = true;
         createjs.Tween.get(gameView)
           .to({scaleX: 1, scaleY: 1}, zoomDuration, createjs.Ease.linear)
           .call(function () {zoomOut = false; zooming = false;});
@@ -396,7 +379,6 @@ var GameLogic = (function () {
     const amplitude = 300;
     const offset = -200;
     const spacing = (1-difficulty)*150+difficulty*300;
-    console.log(difficulty, spacing);
     i =0;
     while (trackEnd.x < CatzRocket.catzRocketContainer.x + 800) {
       trackLength+=spacing;
@@ -417,6 +399,33 @@ var GameLogic = (function () {
       i++;
       if (i > 1000) {
         throw new Error("inifite loop when building track");
+      }
+    }
+
+
+    let windActive = Math.abs(wind) > 0;
+    windTimer -= event.delta/1000;
+    if (windActive) {
+      windSwapTimer-= event.delta/1000;
+      if (windSwapTimer <= 0.0) {
+        if (wind < 0) {
+          downWind();
+        } else {
+          upWind();
+        }
+        windSwapTimer = Math.random()*5;
+      }
+    }
+    if (windTimer <= 0) {
+      if (windActive) {
+        noWind();
+        windTimer = 15;
+      } else if (CatzRocket.catzRocketContainer.x < 200) {
+        upWind();
+        windTimer = 8;
+      } else {
+        downWind();
+        windTimer = 7;
       }
     }
 
@@ -666,6 +675,9 @@ var GameLogic = (function () {
     var windSprite3 = helpers.createSprite(SpriteSheetData.wind, "cycle",
       {x: 500, y: 300, scaleX: -1, scaleY: -1, rotation: 10});
     cont.wind.addChild(windSprite1, windSprite2, windSprite3);
+    if (!windSound) {
+      windSound = createjs.Sound.play("wind");
+    }
   }
 
   function downWind() {
@@ -679,11 +691,18 @@ var GameLogic = (function () {
       {x: 700, y: 400, rotation: 10});
 
     cont.wind.addChild(windSprite1, windSprite2, windSprite3);
+    createjs.Sound.play("wind")
+    if (!windSound) {
+      windSound = createjs.Sound.play("wind");
+    }
   }
 
   function noWind() {
     wind = 0;
     cont.wind.removeAllChildren();
+    if (windSound) {
+      windSound.stop();
+    }
   }
 
   function spawnGoose(x, y) {
@@ -1059,6 +1078,7 @@ var GameLogic = (function () {
   }
 
   function crash() {
+    rocketSong.stop();
     trackLength = 0;
     trackBuiltUntilX = 0;
     currentTrack = 0;
@@ -1068,7 +1088,6 @@ var GameLogic = (function () {
     cont.diamond.removeAllChildren();
     cont.onlooker.removeAllChildren();
     setParallax(currentLevel);
-    directorState = directorStateEnum.Normal;
     noWind();
     stage.removeAllEventListeners();
     stage.removeChild(gameView);
@@ -1097,7 +1116,6 @@ var GameLogic = (function () {
     gameView.scaleY = 1;
     var instance = createjs.Sound.play("catzRocketCrash");
     instance.volume = 0.5;
-    onTrack = false;
     createjs.Tween.get(House.houseView)
       .wait(200)
       .to({x: -50, y: 20}, 50)

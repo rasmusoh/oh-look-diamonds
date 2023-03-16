@@ -579,7 +579,7 @@ SpriteSheetData = (function()
             };
             ssd.wind = {
                 "framerate":24,
-                "images":[queue.getResult("wind")],
+                "images":[queue.getResult("windSwirls")],
                 "frames":[
                     [0, 0, 64, 64, 0, 32, 32],
                     [64, 0, 64, 64, 0, 32, 32],
