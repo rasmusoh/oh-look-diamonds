@@ -6,7 +6,7 @@ var GameLogic = (function () {
     fgSpeed,
     mousedown,
     parallaxSpeed,
-    currentLevel = 1,
+    currentLevel = 0,
     trackLength = 0,
     lastLoopX = 0,
     bigDiamondCounter = 0,
@@ -73,7 +73,7 @@ var GameLogic = (function () {
         CatzRocket.diamondFuel = 1;
       CatzRocket.update(grav, wind, event);
       updateVertices();
-      updateDirector(event);
+      updateLevelGeneration(event);
       updateOnlookers(event);
       updateFg(event);
       updateFgTop(event);
@@ -95,7 +95,8 @@ var GameLogic = (function () {
         + "\nfrenzyReady: " + CatzRocket.frenzyReady
         + "\nHoboDialogNo: " + House.hoboDialogNumber
         + "\n\mousedown: " + mousedown
-        + "\nstate: " + CatzRocket.catzState;
+        + "\nstate: " + CatzRocket.catzState
+        + "\ntrackLength: " + trackLength;
 
 
       stage.update(event);
@@ -355,6 +356,7 @@ var GameLogic = (function () {
     var bgParallax = helpers.createBitmap(queue.getResult(name), {y: -200});
     var bgParallax2 = helpers.createBitmap(queue.getResult(name), {x: 2460, y: -200});
 
+    currentLevel = int;
     if (currentLevel === 1) {
       bgParallax.y = 100;
       bgParallax2.y = 100;
@@ -382,7 +384,11 @@ var GameLogic = (function () {
   // }
 
 
-  function updateDirector(event) {
+  function updateLevelGeneration(event) {
+    const level = Math.min(2,Math.floor(trackLength/12000));
+    if (currentLevel < level) {
+      setParallax(level)
+    }
     difficulty = Math.min(1, Math.sqrt(trackLength) / 400);
     trackEnd.x -= diSpeed * event.delta;
     const invThunderCloudFrequency = difficulty*8+(1-difficulty)*20;  // a thundercloud every n seconds
