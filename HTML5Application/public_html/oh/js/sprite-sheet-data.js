@@ -413,7 +413,8 @@ SpriteSheetData = (function()
                             [256, 512, 256, 128, 0, 0,-68],
                             [512, 512, 256, 128, 0, 0,-68],
                             [768, 512, 256, 128, 0, 0,-68],
-                            [1024, 512, 256, 128, 0, 0,-68]
+                            [1024, 512, 256, 128, 0, 0,-68],
+                            [1280, 512, 256, 128, 0, 0,-68]
                         ],
                 "animations":{
                     "frenzy": {"speed": 1, "frames": [20, 21, 22, 23, 24, 25, 26, 27, 28]},
@@ -424,7 +425,7 @@ SpriteSheetData = (function()
                     "no shake": {"speed": 1, "frames": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]},
                     "frenzy ready": {"speed": 1, "frames": [29, 30]},
                     "flying": {"speed": 0.5, "frames": [31, 32]},
-                    "slipping": {"speed": 1, "frames": [32]}
+                    "slipping": {"speed": 1, "frames": [32,33],next:"slipping"}
                 }
             };
             ssd.flame = {

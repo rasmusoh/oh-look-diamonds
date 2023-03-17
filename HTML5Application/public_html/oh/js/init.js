@@ -406,6 +406,7 @@ var InitializeStage = (function(){
             {x:1,y:1, vert1: 0, vert2: 1},
             {x:1,y:1, vert1: 0, vert2: 2}
         ];
+
         //noseLen=sqrt(width^2+nose^2)
         polygonLine = new createjs.Shape();
         cont.collisionCheckDebug.addChild(polygonLine);

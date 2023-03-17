@@ -159,9 +159,9 @@ var CatzRocket = (function() {
                 Math.sin((catzRocket.catzRocketContainer.rotation + 90) / 360 * 2 * Math.PI) * 100;
         }
 
-        if (catzRocket.isWounded && !createjs.Tween.hasActiveTweens(catzRocket.catz))
+        if (catzRocket.isWounded && !createjs.Tween.hasActiveTweens(catzRocket.catz)) {
             catzRocket.catz.x = -50;
-        else if (!catzRocket.isWounded &&
+        } else if (!catzRocket.isWounded &&
             !createjs.Tween.hasActiveTweens(catzRocket.catz))
             catzRocket.catz.x = 0;
         if (catzRocket.catzRocketContainer.y > catzRocket.crashBorder.bottom || catzRocket.catzRocketContainer.y < catzRocket.crashBorder.top)
@@ -466,11 +466,11 @@ var CatzRocket = (function() {
                     .to({
                         y: 10,
                         x: -25
-                    }, 100)
+                    }, 150)
                     .to({
                         x: -50,
                         y: 5
-                    }, 150)
+                    }, 200)
                     .call(catzRocket.catz.gotoAndPlay, ["no shake"]);
                 invincibilityCounter = 1000;
                 return false;
