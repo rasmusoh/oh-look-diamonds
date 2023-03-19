@@ -17,7 +17,7 @@ var GameLogic = (function () {
     lastResolveNorm = [1, 0],
     paused = false,
     windTimer = 90, // first wind starts after n seconds of play
-    thunderCloudTimer = 20, // first thunder starts after n seconds of play
+    thunderCloudTimer = 40, // first thunder starts after n seconds of play
     windSwapTimer = 0,
     wind = 0,
     windSound,
@@ -1083,6 +1083,8 @@ var GameLogic = (function () {
   function crash() {
     rocketSong.stop();
     trackLength = 0;
+    thunderCloudTimer = 40;
+    windTimer = 90;
     trackBuiltUntilX = 0;
     currentLevel = 1;
     cont.lightning.removeAllChildren();
