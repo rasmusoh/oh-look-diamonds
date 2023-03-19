@@ -1081,12 +1081,14 @@ var GameLogic = (function () {
   }
 
   function crash() {
+
+    CatzRocket.reset();
     rocketSong.stop();
     trackLength = 0;
     thunderCloudTimer = 40;
     windTimer = 90;
     trackBuiltUntilX = 0;
-    currentLevel = 1;
+    currentLevel = 0;
     cont.lightning.removeAllChildren();
     cont.attackBird.removeAllChildren();
     cont.diamond.removeAllChildren();

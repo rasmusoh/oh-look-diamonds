@@ -29,28 +29,52 @@ var gameProgressionJSON = {"hoboCat":
         "ConversationNumber": "hoboCatHouseBuilt"
         },
 		//4
+        {"Conditions":[{"ConditionType": "Score", "Score": 130, "OperatorType": "LessThan"},           
+            {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":false},            
+            {"ConditionType": "buildingState", "state": "built", "building":"hoboCatHouse", "on":true}],               
+        "ShouldReoccur":false,
+        "Chance":1,
+        "ConversationNumber": "orphanageInsufficient"
+        },
         {"Conditions":[{"ConditionType": "Score", "Score": 130, "OperatorType": "LargerThan"},           
             {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":false},            
             {"ConditionType": "buildingState", "state": "built", "building":"hoboCatHouse", "on":true}],               
         "ShouldReoccur":true,
-        "Chance":0.2,
+        "Chance":1,
         "ConversationNumber": "orphanage"
         },
         //4
-        {"Conditions":[{"ConditionType": "Score", "Score": 200, "OperatorType": "LargerThan"},
+        {"Conditions":[{"ConditionType": "Score", "Score": 200, "OperatorType": "LessThan"},
             {"ConditionType": "buildingState", "state": "built", "building":"rehab", "on":false},            
+            {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":true},            
             {"ConditionType": "buildingState", "state": "built", "building":"hoboCatHouse", "on":true}],                
         "ShouldReoccur":true,
-        "Chance":0.2,
+        "Chance":1,
+        "ConversationNumber": "rehabInsufficient"
+        },                
+        {"Conditions":[{"ConditionType": "Score", "Score": 200, "OperatorType": "LargerThan"},
+            {"ConditionType": "buildingState", "state": "built", "building":"rehab", "on":false},            
+            {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":true},            
+            {"ConditionType": "buildingState", "state": "built", "building":"hoboCatHouse", "on":true}],                
+        "ShouldReoccur":true,
+        "Chance":1,
         "ConversationNumber": "rehab"
         },                
         //5
+        {"Conditions":[{"ConditionType": "Score", "Score": 300, "OperatorType": "LessThan"},
+            {"ConditionType": "buildingState", "state": "built", "building":"university", "on":false},
+                {"ConditionType": "buildingState", "state": "built", "building":"rehab", "on":true},
+            {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":true}],                
+        "ShouldReoccur":true,
+        "Chance":1,
+        "ConversationNumber": "schoolInsufficient"
+        },                
         {"Conditions":[{"ConditionType": "Score", "Score": 300, "OperatorType": "LargerThan"},
             {"ConditionType": "buildingState", "state": "built", "building":"university", "on":false},
                 {"ConditionType": "buildingState", "state": "built", "building":"rehab", "on":true},
             {"ConditionType": "buildingState", "state": "built", "building":"orphanage", "on":true}],                
         "ShouldReoccur":true,
-        "Chance":0.2,
+        "Chance":1,
         "ConversationNumber": "school"
         },                
         //6
