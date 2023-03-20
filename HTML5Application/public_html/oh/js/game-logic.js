@@ -314,6 +314,7 @@ var GameLogic = (function () {
         if (!birdHit) {
           if (!debugOptions.godMode) {
             if (CatzRocket.getHit(true)) {
+              gameStats["hasBeenKilledByThunderCloud"] = true;
               catzFellOfRocket();
             }
           }
@@ -970,6 +971,7 @@ var GameLogic = (function () {
         return false;
     }
     if (!debugOptions.godMode && CatzRocket.getHit(false))
+      gameStats["hasBeenKilledByBird"] = true;
       catzFellOfRocket();
     return true;
   }

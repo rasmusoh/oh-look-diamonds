@@ -1,6 +1,66 @@
 ﻿var dialogJSON = {
   "hoboCat":
   {
+
+    "tutorialThunderCloud": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "Watch out for thunder clouds! Ho ho.", "Sound": "hoboCatSound2", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "Never fly into, or directly under them.\n\
+Unless you're in a diamond frenzy, of course.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "However, if a bird is above you, they might be hit by the lightning instead..."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 4, "End": true
+        },
+      ]
+    },
+    "tutorialFuel": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "Your rocket is driven by diamond essence.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "Collect more diamonds to increase your time airborne.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "The blue meter is fuel. Watch that meter! Ho ho."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ]
+    },
+    "tutorialBirds": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "I see you've met the birds!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "They'll bump your rocket off its track, \n\
+and if they hit you on your body you might fall off!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "If you find yourself slipping, make a loop to regain your grip..."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ]
+    },
+    "tutorialFrenzy": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "If you collect enough diamonds\n\
+you will find your self ascending into a frenzy...", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "...where you can't be hurt, and your fuel will be at least partially replenished.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "The pink meter is your diamond frenzy meter!"
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ]
+    },
     "goodEvening":
     {
       "dialog": [
@@ -71,12 +131,14 @@ here I come!"}
         {
           "Who": "Hobo-Cat", "What": "I really appreciate\n\
 you building me a house.\n\
-I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1 },
+I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1
+        },
         {
           "Who": "Hobo-Cat", "What": "Would require more diamonds though.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 5, "End": true
         },
       ], "idle": {
-        "what": " 130 diamonds, that would be about enough..."}
+        "what": " 130 diamonds, that would be about enough..."
+      }
     },
 
     "orphanage":
@@ -115,12 +177,14 @@ in the heart of the city ♫"}
           "Who": "Hobo-Cat", "What": "The orphanage\n\
 is a great success! Seeing those little kttens under a roof.\n\
 brings warms to my old cat heart..\n\
-I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1 },
+I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1
+        },
         {
           "Who": "Hobo-Cat", "What": "Would require more diamonds though.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 5, "End": true
         },
       ], "idle": {
-        "what": " 200 diamonds, that would be about enough..."}
+        "what": " 200 diamonds, that would be about enough..."
+      }
     },
 
     "rehab":
@@ -159,12 +223,14 @@ and the damage done ♫"}
         {
           "Who": "Hobo-Cat", "What": "Listen, what we have done\n\
 together so far. It is great, really. \n\
-I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1 },
+I have more plans, though, bigger ones.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 1
+        },
         {
           "Who": "Hobo-Cat", "What": "Would require more diamonds though.", "Sound": "HoboCatSound1", "Choice": false, "NextID": 5, "End": true
         },
       ], "idle": {
-        "what": " 300 diamonds, that would be about enough..."}
+        "what": " 300 diamonds, that would be about enough..."
+      }
     },
 
     "school":
