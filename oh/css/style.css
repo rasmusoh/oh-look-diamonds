@@ -60,8 +60,8 @@ button {
 .mute-is-not-muted {
     vertical-align: bottom; 
     background: url("../assets/sprites/mute button.png") 0 0;
-    height: 64;
-    width: 54;
+    height: 64px;
+    width: 54px;
 }
 
 .mute-is-muted{
