@@ -470,7 +470,7 @@ var GameLogic = (function () {
     const attackBirdsOrder = ["duck", "seagull", "bat", "crow", "falcon", "glasses"];
     attackBirdsSpawnTimer += event.delta / 1000;
     if (attackBirdsSpawnTimer > 8.0) {
-      attackBirdsType = attackBirdsOrder[Math.min(5, Math.floor(attackBirdsSpawned / 2))]; // three of each type, in order of difficulty
+      attackBirdsType = attackBirdsOrder[Math.min(5, Math.floor(attackBirdsSpawned / 2))]; // two of each type, in order of difficulty
       spawnAttackBird(attackBirdsType, trackEnd.x, trackEnd.y + 200);
       attackBirdsSpawnTimer = 0;
       attackBirdsSpawned += 1;
@@ -970,9 +970,10 @@ var GameLogic = (function () {
       if (projC - Math.max(proj1, proj2) > bird.rad || Math.min(proj1, proj2) - projC > bird.rad)
         return false;
     }
-    if (!debugOptions.godMode && CatzRocket.getHit(false))
+    if (!debugOptions.godMode && CatzRocket.getHit(false)) {
       gameStats["hasBeenKilledByBird"] = true;
       catzFellOfRocket();
+    }
     return true;
   }
 

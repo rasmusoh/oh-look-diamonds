@@ -549,6 +549,7 @@ var CatzRocket = (function () {
   };
 
   catzRocket.reset = function () {
+    createjs.Tween.removeTweens(CatzRocket.rocket);
     createjs.Tween.removeTweens(CatzRocket.catzRocketContainer);
     catzRocket.frenzyReady = false;
     catzRocket.frenzyTimer = 0;
