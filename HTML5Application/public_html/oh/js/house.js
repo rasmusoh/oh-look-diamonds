@@ -118,37 +118,43 @@ var House = (function () {
   house.progressionCheck = function (cat) {
     var catProgression = gameProgressionJSON[cat];
     for (var i = 0, max1 = catProgression.length; i < max1; i++) {
-      conditionLoop:
+      var conditionTrue = true;
       if (!gameStats.HasHappend[cat][i] || catProgression[i].ShouldReoccur &&
         catProgression[i].Chance > Math.random()) {
         for (var j = 0, max2 = catProgression[i].Conditions.length; j < max2; j++) {
           var condition = catProgression[i].Conditions[j];
           if (condition.ConditionType === "Score") {
-            if (condition.OperatorType === "LargerThan" && gameStats.score <= condition.Score)
-              break conditionLoop;
-            else if (condition.OperatorType === "LessThan" && gameStats.score >= condition.Score)
-              break conditionLoop;
-          }
-          else if (condition.ConditionType === "buildingState") {
+            if (condition.OperatorType === "LargerThan" && gameStats.score <= condition.Score) {
+              conditionTrue = false;
+              break;
+            } else if (condition.OperatorType === "LessThan" && gameStats.score >= condition.Score) {
+              conditionTrue = false;
+              break;
+            }
+          } else if (condition.ConditionType === "buildingState") {
             if (condition.state === "builtOnRound" &&
-              ((gameStats.buildings[condition.building][condition.state] + condition.on) >= gameStats.currentRound))
-              break conditionLoop;
-            else if (gameStats.buildings[condition.building][condition.state] !== condition.on)
-              break conditionLoop;
-          }
+              ((gameStats.buildings[condition.building][condition.state] + condition.on) >= gameStats.currentRound)) {
+              conditionTrue = false;
+              break;
+            } else if (gameStats.buildings[condition.building][condition.state] !== condition.on) {
+              conditionTrue = false;
+              break;
+            }
 
-          else if (condition.ConditionType === "state" && gameStats[condition.state] !== condition.on)
-            break conditionLoop;
-
-          //If all conditions have been passed                    
-          if (j === catProgression[i].Conditions.length - 1) {
-            currentCharacter = cat;
-            characterActive[currentCharacter] = true;
-            wickActive = false;
-            gameStats.HasHappend[cat][i] = true;
-            return catProgression[i].ConversationNumber;
+          } else if (condition.ConditionType === "state" && gameStats[condition.state] !== condition.on) {
+            conditionTrue = false;
+            break;
           }
         }
+        if (!conditionTrue) {
+          continue
+        }
+
+        currentCharacter = cat;
+        characterActive[currentCharacter] = true;
+        wickActive = false;
+        gameStats.HasHappend[cat][i] = true;
+        return catProgression[i].ConversationNumber;
       }
     }
     return -1;

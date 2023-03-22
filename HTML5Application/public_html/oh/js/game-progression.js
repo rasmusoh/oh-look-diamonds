@@ -1,30 +1,6 @@
 var gameProgressionJSON = {
   "hoboCat":
     [
-      {
-        "Conditions": [{"ConditionType": "state", "state": "hasRunOutOfFuel", "on": true}],
-        "ShouldReoccur": false,
-        "Chance": 1,
-        "ConversationNumber": "tutorialFuel"
-      },
-      {
-        "Conditions": [{"ConditionType": "state", "state": "hasBeenKilledByThunderCloud", "on": true}],
-        "ShouldReoccur": false,
-        "Chance": 1,
-        "ConversationNumber": "tutorialThunderCloud"
-      },
-      {
-        "Conditions": [{"ConditionType": "state", "state": "hasBeenKilledByBird", "on": true}],
-        "ShouldReoccur": false,
-        "Chance": 1,
-        "ConversationNumber": "tutorialBirds"
-      },
-      {
-        "Conditions": [{"ConditionType": "state", "state": "hasAchievedFrenzy", "on": true}],
-        "ShouldReoccur": false,
-        "Chance": 1,
-        "ConversationNumber": "tutorialFrenzy"
-      },
       //0
       {
         "Conditions": [{"ConditionType": "Score", "Score": -1, "OperatorType": "LargerThan"}],
@@ -133,7 +109,31 @@ var gameProgressionJSON = {
         "ShouldReoccur": false,
         "Chance": 0.3,
         "ConversationNumber": "psyciatricWing"
-      }
+      },
+      {
+        "Conditions": [{"ConditionType": "state", "state": "hasRunOutOfFuel", "on": true}],
+        "ShouldReoccur": false,
+        "Chance": 1,
+        "ConversationNumber": "tutorialFuel"
+      },
+      {
+        "Conditions": [{"ConditionType": "state", "state": "hasBeenKilledByThunderCloud", "on": true}],
+        "ShouldReoccur": false,
+        "Chance": 1,
+        "ConversationNumber": "tutorialThunderCloud"
+      },
+      {
+        "Conditions": [{"ConditionType": "state", "state": "hasBeenKilledByBird", "on": true}],
+        "ShouldReoccur": false,
+        "Chance": 1,
+        "ConversationNumber": "tutorialBirds"
+      },
+      {
+        "Conditions": [{"ConditionType": "state", "state": "hasAchievedFrenzy", "on": true}],
+        "ShouldReoccur": false,
+        "Chance": 1,
+        "ConversationNumber": "tutorialFrenzy"
+      },
     ],
   "timmy": [
     {

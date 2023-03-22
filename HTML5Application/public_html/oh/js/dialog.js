@@ -1,66 +1,6 @@
 ﻿var dialogJSON = {
   "hoboCat":
   {
-
-    "tutorialThunderCloud": {
-      "dialog": [
-        {
-          "Who": "Hobo-Cat", "What": "Watch out for thunder clouds! Ho ho.", "Sound": "hoboCatSound2", "Choice": false, "NextID": 1, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "Never fly into, or directly under them.\n\
-Unless you're in a diamond frenzy, of course.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "However, if a bird is above you, they might be hit by the lightning instead..."
-          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 4, "End": true
-        },
-      ]
-    },
-    "tutorialFuel": {
-      "dialog": [
-        {
-          "Who": "Hobo-Cat", "What": "Your rocket is driven by diamond essence.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "Collect more diamonds to increase your time airborne.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "The blue meter is fuel. Watch that meter! Ho ho."
-          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
-        },
-      ]
-    },
-    "tutorialBirds": {
-      "dialog": [
-        {
-          "Who": "Hobo-Cat", "What": "I see you've met the birds!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "They'll bump your rocket off its track, \n\
-and if they hit you on your body you might fall off!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "If you find yourself slipping, make a loop to regain your grip..."
-          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
-        },
-      ]
-    },
-    "tutorialFrenzy": {
-      "dialog": [
-        {
-          "Who": "Hobo-Cat", "What": "If you collect enough diamonds\n\
-you will find your self ascending into a frenzy...", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "...where you can't be hurt, and your fuel will be at least partially replenished.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
-        },
-        {
-          "Who": "Hobo-Cat", "What": "The pink meter is your diamond frenzy meter!"
-          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
-        },
-      ]
-    },
     "goodEvening":
     {
       "dialog": [
@@ -307,7 +247,67 @@ that fancy new garden"}
       {"Who": "Catz", "What": "meow...", "Choice": false, "NextID": 2, "End": false}
       ],
       "idle": {"what": "harsh times"}
-    }
+    },
+    "tutorialThunderCloud": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "Watch out for thunder clouds! Ho ho.", "Sound": "hoboCatSound2", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "Never fly into, or directly under them.\n\
+Unless you're in a diamond frenzy, of course.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "However, if a bird is above you, they might be hit by the lightning instead..."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 4, "End": true
+        },
+      ], "idle": {"what": "*cough*"}
+    },
+    "tutorialFuel": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "Looks like you ran out of fuel just then!\n\
+Your rocket is driven by diamond essence.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "Collect more diamonds to increase your time airborne.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "The blue meter is fuel. Watch that meter! Ho ho."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ], "idle": {"what": "*cough*"}
+    },
+    "tutorialBirds": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "I see you've met the birds!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "They'll bump your rocket off its track, \n\
+and if they hit you on your body you might fall off!", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "If you find yourself slipping, make a loop to regain your grip..."
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ], "idle": {"what": "*cough*"}
+    },
+    "tutorialFrenzy": {
+      "dialog": [
+        {
+          "Who": "Hobo-Cat", "What": "If you collect enough diamonds\n\
+you will find your self ascending into a frenzy...", "Sound": "hoboCatSound1", "Choice": false, "NextID": 1, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "...where you can't be hurt, and your fuel will be at least partially replenished.", "Sound": "hoboCatSound1", "Choice": false, "NextID": 2, "End": false
+        },
+        {
+          "Who": "Hobo-Cat", "What": "The pink meter is your diamond frenzy meter!"
+          , "Sound": "hoboCatSound2", "Choice": false, "NextID": 3, "End": true
+        },
+      ], "idle": {"what": "*cough*"}
+    },
   },
   "timmy": {
 
